@@ -108,7 +108,6 @@ customjsReady('._58nk', x => {
 });
 
 function hook() {
-    alert('try hook');
   var oldsend = require("MercuryMessageActions").prototype.send;
   require("MercuryMessageActions").prototype.send = function(i, j, k) {
     if (password === '') {
