@@ -118,14 +118,14 @@ function hooker() {
 }
 hooker();
 
-$(document).keydown(e => {
+document.addEventListener('keydown', e => {
   if (e.keyCode === 18) {
     $('#persistcb').checked = false;
     decryptAll();
   }
 });
 
-$(document).keyup(e => {
+document.addEventListener('keyup', e => {
   if (e.keyCode === 18 && !persist) {
     uncryptAll();
   }
