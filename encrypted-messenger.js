@@ -47,6 +47,7 @@ var persist = false;
 customjsReady("._fl2", e => {
   var pass = document.createElement('input');
   pass.type = 'password';
+  pass.id = 'password';
   pass.addEventListener('input', x => {
     password = pass.value;
     if (!persist) {
