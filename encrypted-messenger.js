@@ -1,5 +1,3 @@
-// configure with jQuery 3
-
 async function aesGcmEncrypt(plaintext, password) {
     const pwUtf8 = new TextEncoder().encode(password);                                 // encode password as UTF-8
     const pwHash = await crypto.subtle.digest('SHA-256', pwUtf8);                      // hash the password
@@ -55,7 +53,7 @@ customjsReady("._fl2", e => {
     }
     decryptAll();
   });
-  $(e).prepend(pass);
+  e.prepend(pass);
 
   var persistcb = document.createElement('input');
   persistcb.type = 'checkbox';
@@ -68,14 +66,14 @@ customjsReady("._fl2", e => {
       uncryptAll();
     }
   });
-  $(e).prepend(persistcb);
+  e.prepend(persistcb);
 });
 
 function decrypt(x) {
-  var r = $(x).data('received');
+  var r = x.dataset.received;
   if (r === undefined) {
     r = x.innerText;
-    $(x).data('received', x.innerText);
+    x.dataset.received = x.innerText;
   }
   x.innerText = r;
   if (password === '') {
@@ -88,10 +86,18 @@ function decrypt(x) {
   }
 }
 
-function decryptAll() { $('._58nk').each(function (i) { decrypt(this); }); }
+function onEach(selector, f) {
+    var xs = document.querySelectorAll(selector);
+    var i;
+    for (i = 0; i < xs.length; ++i) {
+        f(xs[i]);
+    }
+}
+
+function decryptAll() { onEach('._58nk', (x) => { decrypt(x); }); }
 function uncryptAll() {
-  $('._58nk').each(function (i)  {
-      this.innerText = $(this).data('received');
+  onEach('._58nk', (x) => {
+      x.innerText = x.dataset.received;
   });
 }
 
@@ -102,6 +108,7 @@ customjsReady('._58nk', x => {
 });
 
 function hook() {
+    alert('try hook');
   var oldsend = require("MercuryMessageActions").prototype.send;
   require("MercuryMessageActions").prototype.send = function(i, j, k) {
     if (password === '') {
@@ -121,7 +128,8 @@ hooker();
 
 document.addEventListener('keydown', e => {
   if (e.keyCode === 18) {
-    $('#persistcb').checked = false;
+    document.getElementById('persistcb').checked = false;
+    persist = false;
     decryptAll();
   }
 });
