@@ -130,3 +130,15 @@ $(document).keyup(e => {
     uncryptAll();
   }
 });
+
+var keys = {};
+var cur_url = document.location.href;
+(function changeKeyOnWindowChange() {
+  if (document.location.href !== cur_url) {
+    keys[cur_url] = password;
+    cur_url = document.location.href;
+    password = (keys[cur_url] || '');
+    document.getElementById('password').value = password;
+  } 
+  setTimeout(changeKeyOnWindowChange, 100);
+})();
